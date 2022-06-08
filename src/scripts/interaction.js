@@ -87,6 +87,7 @@ const isScrollableLibrary = function (library) {
  * @property {number} duration.from Time-code when interaction will be showed
  * @property {number} duration.to Time-code when interaction will be hidden
  * @property {boolean} pause True if video should be paused when interaction is displayed
+ * @property {boolean} loopChoice True if video should be replayed when choice wasn't made
  * @property {string} displayType The way the interaction will be displayed, e.g. "button".
  * @property {boolean} mainSummary True if this interaction is the built-in summary of Interactive Video.
  * @property {string} libraryTitle Clear text name of the library used in the interaction
@@ -754,6 +755,10 @@ function Interaction(parameters, player, previousState) {
       time += 0.2;
     }
 
+    if (library === 'H5P.IVHotspot') {
+        self.hotspotClicked = true;
+    }
+
     // Jump to chosen timecode
     player.seek(time);
   };
@@ -1119,6 +1124,60 @@ function Interaction(parameters, player, previousState) {
    */
   self.pause = function () {
     return parameters.pause;
+  };
+
+  /**
+   * Checks to see if the interaction should loop the video while making a choice.
+   *
+   * @returns {boolean}
+   */
+  self.loopChoice = function () {
+    return !!parameters.loopChoice;
+  };
+
+  /**
+   *  Get destination time
+   *
+   * @returns {number}
+   */
+  self.getDestinationTime = function () {
+    return parameters.action.params.destination.time;
+  };
+
+  /**
+   * Get loop counter amount
+   *
+   * @returns {number}
+   */
+  self.moveBack = function () {
+    return parameters.moveBack;
+  };
+
+  /**
+   * Get move back timecode
+   * Note: function needed for lopps counter, finish it later
+   * @returns {number}
+   */
+  self.getMoveBackTimecode = function () {
+    return parameters.moveBackTime;
+  };
+
+  /**
+   * Get loop counter amount
+   * Note: function needed for lopps counter, finish it later
+   * @returns {number}
+   */
+  self.getLoopCounterAmount = function () {
+    return parameters.loopsNumber;
+  };
+
+  /**
+   * Get loop seek timecode amount
+   * Note: function needed for lopps counter, finish it later
+   * @returns {number}
+   */
+  self.getLoopSeekTimecode = function () {
+    return parameters.loopSeek;
   };
 
   /**
@@ -1507,6 +1566,8 @@ function Interaction(parameters, player, previousState) {
 
         if (library === 'H5P.IVHotspot') {
           instance.on('goto', goto);
+          self.hotspotClicked = false;
+          self.hotspotLoopsAmount = 0;
         }
         if (library === 'H5P.GoToQuestion') {
           instance.on('chosen', goto);

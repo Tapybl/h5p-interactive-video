@@ -186,6 +186,26 @@
                   "type": "boolean"
                 },
                 {
+                  "name": "loopChoice",
+                  "label": "Loop video",
+                  "importance": "low",
+                  "type": "boolean"
+                },
+                {
+                  "name": "moveBack",
+                  "label": "Move back after reaching end display time",
+                  "importance": "low",
+                  "type": "boolean"
+                },
+                {
+                  "name": "moveBackTime",
+                  "type": "number",
+                  "widget": "timecode",
+                  "importance": "low",
+                  "label": "Move back time after reaching end display time",
+                  "description": "Enter timecode in the format M:SS"
+                },
+                {
                   "name": "displayType",
                   "label": "Display as",
                   "importance": "low",
