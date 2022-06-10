@@ -3553,47 +3553,73 @@ InteractiveVideo.prototype.findNextInteractionToHide = function (time) {
 };*/
 
 InteractiveVideo.prototype.hideInteractions = function (time) {
+  let hotspotLibraryName = "H5P.IVHotspot";
   // Start by figuring out which interaction we're going to be hiding next
   if (this.nextInteractionToHide === undefined) {
     this.nextInteractionToHide = this.findNextInteractionToHide(time);
   }
+  let currentInteractionDuration = false;
+  let otherClicked = false;
   let interaction = this.nextInteractionToHide !== undefined ? this.interactions[this.visibleInteractions[this.nextInteractionToHide]] : null;
-    while (interaction && !interaction.visibleAt(time)) {
-      //check if we have navigation hotspot loopchoice and if it was clicked and if video wasn't seeked
-      if(interaction.loopChoice() && !interaction.hotspotClicked && (this.currentState !== InteractiveVideo.SEEKING)) {
 
-       // TODO: Loop Counter and redirect
-       /* if(interaction.getLoopCounterAmount() >= 0) {
-          interaction.hotspotLoopsAmount++;
+    while (interaction && !interaction.visibleAt(time)) {
+
+        interaction.connectedHotspots = [];
+        let currentInteractionIndex = this.visibleInteractions[this.nextInteractionToHide];
+        if (interaction.getLibraryName() == hotspotLibraryName) {
+            currentInteractionDuration = interaction.getDuration();
         }
 
-        if(interaction.getLoopCounterAmount() == interaction.hotspotLoopsAmount && interaction.getLoopCounterAmount() >= 0) {
-          console.log(interaction.hotspotLoopsAmount);
-          this.bla = true;
-          interaction.hotspotClicked = true;
-          this.video.seek(interaction.getLoopSeekTimecode());
-          return;
-        }     */
+        for (var i = 0; i < this.interactions.length; i++) {
+            if (this.interactions[i].getLibraryName() == hotspotLibraryName && currentInteractionDuration && i != currentInteractionIndex) {
+                let duration = this.interactions[i].getDuration();
+                if (duration.from <= currentInteractionDuration.to && currentInteractionDuration.from <= duration.to) {
+                    interaction.connectedHotspots.push(i);
+                }
+            }
+        }
 
-        this.video.seek(interaction.getDuration().from);
-        return;
-      }
+        for (var i = 0; i < interaction.connectedHotspots.length; i++) {
+            if(this.interactions[interaction.connectedHotspots[i]].hotspotClicked == true) {
+                otherClicked = true;
+            }
+        }
 
-      if(interaction.moveBack())
-      {
-          this.seek(interaction.getMoveBackTimecode());
-      }
+        //check if we have navigation hotspot loopchoice and if it was clicked and if video wasn't seeked
+        if (interaction.loopChoice() && !otherClicked && !interaction.hotspotClicked && (this.currentState !== InteractiveVideo.SEEKING)) {
 
-      // Hide this interaction
-      interaction.toggle(time);
+            // TODO: Loop Counter and redirect
+            /* if(interaction.getLoopCounterAmount() >= 0) {
+             interaction.hotspotLoopsAmount++;
+             }
 
-      // Successfully removed interaction, clean up our array
-      this.visibleInteractions.splice(this.nextInteractionToHide, 1);
+             if(interaction.getLoopCounterAmount() == interaction.hotspotLoopsAmount && interaction.getLoopCounterAmount() >= 0) {
+             console.log(interaction.hotspotLoopsAmount);
+             this.bla = true;
+             interaction.hotspotClicked = true;
+             this.video.seek(interaction.getLoopSeekTimecode());
+             return;
+             }     */
 
-      // Are there more interactions for us to hide?
-      this.nextInteractionToHide = this.findNextInteractionToHide(time);
+            this.video.seek(interaction.getDuration().from);
+            return;
+        }
 
-      interaction = this.nextInteractionToHide !== undefined ? this.interactions[this.visibleInteractions[this.nextInteractionToHide]] : null;
+        if (interaction.moveBack())
+        {
+            this.seek(interaction.getMoveBackTimecode());
+        }
+
+        // Hide this interaction
+        interaction.toggle(time);
+
+        // Successfully removed interaction, clean up our array
+        this.visibleInteractions.splice(this.nextInteractionToHide, 1);
+
+        // Are there more interactions for us to hide?
+        this.nextInteractionToHide = this.findNextInteractionToHide(time);
+
+        interaction = this.nextInteractionToHide !== undefined ? this.interactions[this.visibleInteractions[this.nextInteractionToHide]] : null;
     }
 };
 
@@ -3654,11 +3680,9 @@ InteractiveVideo.prototype.play = function () {
  */
 InteractiveVideo.prototype.seek = function (time) {
   this.nextInteractionToShow = this.nextInteractionToHide = undefined; // Reset next interactions on seek
-  console.log('Here in seek');
   for (var i = 0; i < this.interactions.length; i++) {
     if(this.interactions[i].getLibraryName() == "H5P.IVHotspot" && time !== this.interactions[i].getDestinationTime()) {
        this.interactions[i].hotspotClicked = false;
-       this.interactions[i].hotspotLoopsAmount = 0;
     }
   }
   this.video.seek(time);
