@@ -3584,25 +3584,32 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
                 otherClicked = true;
             }
         }
-
         //check if we have navigation hotspot loopchoice and if it was clicked and if video wasn't seeked
-        if (interaction.loopChoice() && !otherClicked && !interaction.hotspotClicked && (this.currentState !== InteractiveVideo.SEEKING)) {
+        if (interaction.loopChoice() &&
+            !otherClicked &&
+            !this.loopSeeked &&
+            !interaction.hotspotClicked &&
+            (this.currentState !== InteractiveVideo.SEEKING))
+        {
 
-            // TODO: Loop Counter and redirect
-            /* if(interaction.getLoopCounterAmount() >= 0) {
-             interaction.hotspotLoopsAmount++;
-             }
+            if (interaction.getLoopCounterAmount() >= 0) {
+                interaction.hotspotLoopsAmount++;
+            }
 
-             if(interaction.getLoopCounterAmount() == interaction.hotspotLoopsAmount && interaction.getLoopCounterAmount() >= 0) {
-             console.log(interaction.hotspotLoopsAmount);
-             this.bla = true;
-             interaction.hotspotClicked = true;
-             this.video.seek(interaction.getLoopSeekTimecode());
-             return;
-             }     */
+            if (interaction.getLoopCounterAmount() == interaction.hotspotLoopsAmount && interaction.getLoopCounterAmount() >= 0) {
+                this.loopSeeked = true;
+                interaction.hotspotLoopsAmount = 0;
+                this.video.seek(interaction.getLoopSeekTimecode());
+            }
+            else {
+               this.video.seek(interaction.getDuration().from);
+               return;
+           }
 
-            this.video.seek(interaction.getDuration().from);
-            return;
+        }
+        else {
+            let that = this;
+            setTimeout(function(){ that.loopSeeked = false; }, 1000);
         }
 
         if (interaction.moveBack())

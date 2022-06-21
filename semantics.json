@@ -206,6 +206,24 @@
                   "description": "Enter timecode in the format M:SS"
                 },
                 {
+                    "name": "loopsNumber",
+                    "type": "number",
+                    "label": "Loops number",
+                    "importance": "low",
+                    "description": "Loops number, set negative number for infinite loops",
+                    "max": 100,
+                    "step": 1,
+                    "default": -1
+                },
+                {
+                    "name": "loopSeek",
+                    "type": "number",
+                    "widget": "timecode",
+                    "importance": "low",
+                    "label": "Seek to after loops amounts",
+                    "description": "Enter timecode in the format M:SS"
+                },
+                {
                   "name": "displayType",
                   "label": "Display as",
                   "importance": "low",
