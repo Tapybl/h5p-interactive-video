@@ -968,7 +968,8 @@ InteractiveVideo.prototype.addControls = function () {
  * Prepares the IV for playing.
  */
 InteractiveVideo.prototype.loaded = function () {
-  // Get duration
+  let i;
+// Get duration
   var duration = this.getDuration();
 
   // Determine how many percentage one second is.
@@ -986,7 +987,7 @@ InteractiveVideo.prototype.loaded = function () {
 
     // Set max value for adaptive seeking timecodes
     var adaptivityFields = findField('adaptivity', interactions.field.fields).fields;
-    for (var i = 0; i < adaptivityFields.length; i++) {
+    for (i = 0; i < adaptivityFields.length; i++) {
       if (adaptivityFields[i].fields) {
         findField('seekTo', adaptivityFields[i].fields).max = duration;
       }
@@ -995,7 +996,7 @@ InteractiveVideo.prototype.loaded = function () {
 
   // Move interactions to the end if the video is shorten
   if (this.options.assets.interactions && this.options.assets.interactions.length>0) {
-    for (var i=this.options.assets.interactions.length-1; i>=0; i--) {
+    for (i = this.options.assets.interactions.length-1; i>=0; i--) {
       if (this.options.assets.interactions[i].duration.to > duration) {
         const interactionDuration = this.options.assets.interactions[i].duration.to - this.options.assets.interactions[i].duration.from;
         const from = duration - interactionDuration <= 0 ? 0 : duration - interactionDuration;
@@ -3496,14 +3497,13 @@ InteractiveVideo.prototype.getTitle = function () {
  */
 InteractiveVideo.prototype.findNextInteractionToShow = function (time, index) {
   let candidate;
-  for (var i = 0; i < this.interactions.length; i++) {
+  for (let i = 0; i < this.interactions.length; i++) {
     const duration = this.interactions[i].getDuration();
     if (this.interactions[i].visibleAt(time) && !this.interactions[i].isVisible()) {
       candidate = i; // This is supposed to be visible but it's not...
       break;         // so, we display this first.
-    }
-    else if ((duration.from > time || (duration.from == time && (index === undefined || i > index)))
-        && (candidate === undefined || duration.from < this.interactions[candidate].getDuration().from)) {
+    } else if ((duration.from > time || (duration.from === time && (index === undefined || i > index))) &&
+        (candidate === undefined || duration.from < this.interactions[candidate].getDuration().from)) {
       candidate = i;
     }
   }
@@ -3518,7 +3518,7 @@ InteractiveVideo.prototype.findNextInteractionToShow = function (time, index) {
  */
 InteractiveVideo.prototype.findNextInteractionToHide = function (time) {
   let candidate;
-  for (var i = 0; i < this.visibleInteractions.length; i++) {
+  for (let i = 0; i < this.visibleInteractions.length; i++) {
     const duration = this.interactions[this.visibleInteractions[i]].getDuration();
     if (candidate === undefined || duration.to < this.interactions[this.visibleInteractions[candidate]].getDuration().to) {
       candidate = i;
@@ -3564,14 +3564,15 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
 
     while (interaction && !interaction.visibleAt(time)) {
 
+        let i;
         interaction.connectedHotspots = [];
         let currentInteractionIndex = this.visibleInteractions[this.nextInteractionToHide];
-        if (interaction.getLibraryName() == hotspotLibraryName) {
+        if (interaction.getLibraryName() === hotspotLibraryName) {
             currentInteractionDuration = interaction.getDuration();
         }
 
-        for (var i = 0; i < this.interactions.length; i++) {
-            if (this.interactions[i].getLibraryName() == hotspotLibraryName && currentInteractionDuration && i != currentInteractionIndex) {
+        for (i = 0; i < this.interactions.length; i++) {
+            if (this.interactions[i].getLibraryName() === hotspotLibraryName && currentInteractionDuration && i !== currentInteractionIndex) {
                 let duration = this.interactions[i].getDuration();
                 if (duration.from <= currentInteractionDuration.to && currentInteractionDuration.from <= duration.to) {
                     interaction.connectedHotspots.push(i);
@@ -3579,8 +3580,8 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
             }
         }
 
-        for (var i = 0; i < interaction.connectedHotspots.length; i++) {
-            if(this.interactions[interaction.connectedHotspots[i]].hotspotClicked == true) {
+        for (i = 0; i < interaction.connectedHotspots.length; i++) {
+            if (this.interactions[interaction.connectedHotspots[i]].hotspotClicked) {
                 otherClicked = true;
             }
         }
@@ -3589,14 +3590,13 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
             !otherClicked &&
             !this.loopSeeked &&
             !interaction.hotspotClicked &&
-            (this.currentState !== InteractiveVideo.SEEKING))
-        {
+            (this.currentState !== InteractiveVideo.SEEKING)) {
 
             if (interaction.getLoopCounterAmount() >= 0) {
                 interaction.hotspotLoopsAmount++;
             }
 
-            if (interaction.getLoopCounterAmount() == interaction.hotspotLoopsAmount && interaction.getLoopCounterAmount() >= 0) {
+            if (interaction.getLoopCounterAmount() === interaction.hotspotLoopsAmount && interaction.getLoopCounterAmount() >= 0) {
                 this.loopSeeked = true;
                 interaction.hotspotLoopsAmount = 0;
                 this.video.seek(interaction.getLoopSeekTimecode());
@@ -3606,14 +3606,12 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
                return;
            }
 
-        }
-        else {
+        } else {
             let that = this;
             setTimeout(function(){ that.loopSeeked = false; }, 1000);
         }
 
-        if (interaction.moveBack())
-        {
+        if (interaction.moveBack()) {
             this.seek(interaction.getMoveBackTimecode());
         }
 
