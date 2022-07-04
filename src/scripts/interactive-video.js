@@ -517,11 +517,11 @@ function InteractiveVideo(params, id, contentData) {
 
       // Auto toggle fullscreen on play if on a small device
       var isSmallDevice = screen ? Math.min(screen.width, screen.height) <= self.width : true;
-      const canPlayInFullScreen = H5P.fullscreenSupported
-        && !self.hasFullScreen
-        && isSmallDevice
-        && self.$container.hasClass('h5p-standalone')
-        && self.$container.hasClass('h5p-minimal');
+      const canPlayInFullScreen = H5P.fullscreenSupported &&
+        !self.hasFullScreen &&
+        isSmallDevice &&
+        self.$container.hasClass('h5p-standalone') &&
+        self.$container.hasClass('h5p-minimal');
       if (canPlayInFullScreen) {
         self.toggleFullScreen();
       }
@@ -533,7 +533,7 @@ function InteractiveVideo(params, id, contentData) {
       self.video.pause();
     }
     self.handleAnswered();
-  }
+  };
 
   /**
    * Toggle mute
@@ -3612,7 +3612,13 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
         }
 
         if (interaction.moveBack()) {
-            this.seek(interaction.getMoveBackTimecode());
+            let time = interaction.getMoveBackTimecode()
+            let self  = this;
+            setTimeout(function() {
+                self.seek(time);
+                self.updateCurrentTime(time);
+                self.updateInteractions(time);
+            }, 10)
         }
 
         // Hide this interaction
