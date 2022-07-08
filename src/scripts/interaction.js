@@ -1136,6 +1136,19 @@ function Interaction(parameters, player, previousState) {
   };
 
   /**
+   *
+   *
+   * @returns
+   */
+  self.getTexts = function () {
+    /*if(!parameters.texts) {
+        return false;
+    }*/
+
+    return parameters.action.params.texts;
+  };
+
+  /**
    *  Get destination time
    *
    * @returns {number}
@@ -1550,6 +1563,26 @@ function Interaction(parameters, player, previousState) {
           self.setLastXAPIVerb(event.getVerb());
 
           self.trigger(event);
+        });
+
+        instance.on('click', function (event) {
+          console.log(window.trmObject);
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: 'http://localhost/wp-json/tapybl-reports/v1/interaction',
+                data: {
+                    VideoName: player.contentData.metadata.title,
+                    h5p_id: player.contentId,
+                    interaction_name: self.getTexts().alternativeText,
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                }
+                });
         });
 
         instance.on('question-finished', function () {
