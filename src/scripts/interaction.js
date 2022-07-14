@@ -1136,15 +1136,11 @@ function Interaction(parameters, player, previousState) {
   };
 
   /**
-   *
+   * Get Texts of the interactive video
    *
    * @returns
    */
   self.getTexts = function () {
-    /*if(!parameters.texts) {
-        return false;
-    }*/
-
     return parameters.action.params.texts;
   };
 
