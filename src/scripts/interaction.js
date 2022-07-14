@@ -1566,11 +1566,14 @@ function Interaction(parameters, player, previousState) {
         });
 
         instance.on('click', function (event) {
-          console.log(window.trmObject);
+            const nonceEl = window.parent.document.getElementById('wpnonce');
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
-                url: 'http://localhost/wp-json/tapybl-reports/v1/interaction',
+                url: '/wp-json/tapybl-reports/v1/interaction',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                },
                 data: {
                     VideoName: player.contentData.metadata.title,
                     h5p_id: player.contentId,
