@@ -1136,6 +1136,15 @@ function Interaction(parameters, player, previousState) {
   };
 
   /**
+   * Get Texts of the interactive video
+   *
+   * @returns {Object}
+   */
+  self.getTexts = function () {
+    return parameters.action.params.texts;
+  };
+
+  /**
    *  Get destination time
    *
    * @returns {number}
@@ -1550,6 +1559,32 @@ function Interaction(parameters, player, previousState) {
           self.setLastXAPIVerb(event.getVerb());
 
           self.trigger(event);
+        });
+
+        instance.on('click', function (event) {
+            const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
+            if(nonceEl) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/wp-json/tapybl-reports/v1/interaction',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                    },
+                    data: {
+                        videoName: player.contentData.metadata.title,
+                        h5pId: player.contentId,
+                        interactionName: self.getTexts().label,
+                        interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus);
+                    }
+                });
+            }
         });
 
         instance.on('question-finished', function () {
