@@ -223,7 +223,16 @@
                     "label": "Seek to after loops amounts",
                     "description": "Enter timecode in the format M:SS"
                 },
-                {
+                  {
+                      "name": "interactionGroup",
+                      "type": "text",
+                      "optional": true,
+                      "importance": "low",
+                      "label": "Group",
+                      "description": "Enter the group this interaction belongs to"
+                  },
+
+                  {
                   "name": "displayType",
                   "label": "Display as",
                   "importance": "low",
