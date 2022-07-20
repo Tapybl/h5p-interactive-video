@@ -1153,6 +1153,14 @@ function Interaction(parameters, player, previousState) {
     return parameters.action.params.destination.time;
   };
 
+  self.getInteractionGroup = function () {
+    if (parameters.hasOwnProperty("interactionGroup")) {
+      return parameters.interactionGroup
+    }
+
+    return false;
+  };
+
   /**
    * Get loop counter amount
    *
@@ -1575,7 +1583,8 @@ function Interaction(parameters, player, previousState) {
                         videoName: player.contentData.metadata.title,
                         h5pId: player.contentId,
                         interactionName: self.getTexts().label,
-                        interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                        interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                        interactionGroup: self.getInteractionGroup()
                     },
                     success: function (response) {
                         console.log(response);
