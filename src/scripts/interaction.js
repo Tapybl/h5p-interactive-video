@@ -1610,7 +1610,7 @@ function Interaction(parameters, player, previousState) {
                     data: {
                         videoName: player.contentData.metadata.title,
                         h5pId: player.contentId,
-                        //interactionId: parameters.action.subContentId,
+                        interactionId: parameters.action.subContentId,
                         interactionName: self.getTexts().label,
                         interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
                         interactionGroup: self.getInteractionGroup()
