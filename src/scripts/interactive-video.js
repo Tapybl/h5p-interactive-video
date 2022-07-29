@@ -348,7 +348,6 @@ function InteractiveVideo(params, id, contentData) {
         }
         case H5P.Video.PLAYING:
           if (firstPlay) {
-              console.log('Here');
             // Qualities might not be available until after play.
             self.addQualityChooser();
 

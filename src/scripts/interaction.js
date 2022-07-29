@@ -1593,7 +1593,7 @@ function Interaction(parameters, player, previousState) {
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log(textStatus);
                     }
-                });                
+                });
             }
         });
 
