@@ -759,6 +759,34 @@ function Interaction(parameters, player, previousState) {
         self.hotspotClicked = true;
     }
 
+    if (library === 'H5P.Image') {
+        const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
+        if (nonceEl) {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/wp-json/tapybl-reports/v1/interaction',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                },
+                data: {
+                    videoName: player.contentData.metadata.title,
+                    h5pId: player.contentId,
+                    //interactionId: parameters.action.subContentId,
+                    interactionName: parameters.action.params.alt,
+                    interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                    interactionGroup: self.getInteractionGroup()
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                }
+            });
+        }
+    }
+
     // Jump to chosen timecode
     player.seek(time);
   };
