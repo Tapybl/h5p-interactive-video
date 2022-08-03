@@ -367,6 +367,28 @@ function InteractiveVideo(params, id, contentData) {
 
             firstPlay = false;
 
+            const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
+            if (nonceEl) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/wp-json/tapybl-reports/v1/increase-view',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                    },
+                    data: {
+                        videoId: self.contentId
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus);
+                    }
+                });
+            }
+
+
             var poster = self.options.video.startScreenOptions.poster;
             // Resize if poster image is set
             if (poster && poster.path !== undefined) {
