@@ -3585,7 +3585,7 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
   let interaction = this.nextInteractionToHide !== undefined ? this.interactions[this.visibleInteractions[this.nextInteractionToHide]] : null;
 
     while (interaction && !interaction.visibleAt(time)) {
-
+        this.removeDisabled(this.controls.$play);
         let i;
         interaction.connectedHotspots = [];
         let currentInteractionIndex = this.visibleInteractions[this.nextInteractionToHide];
@@ -3630,17 +3630,17 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
 
         } else {
             let that = this;
-            setTimeout(function(){ that.loopSeeked = false; }, 1000);
+            setTimeout(function() { that.loopSeeked = false; }, 1000);
         }
 
         if (interaction.moveBack()) {
-            let time = interaction.getMoveBackTimecode()
+            let time = interaction.getMoveBackTimecode();
             let self  = this;
             setTimeout(function() {
                 self.seek(time);
                 self.updateCurrentTime(time);
                 self.updateInteractions(time);
-            }, 10)
+            }, 10);
         }
 
         // Hide this interaction
@@ -3651,7 +3651,6 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
 
         // Are there more interactions for us to hide?
         this.nextInteractionToHide = this.findNextInteractionToHide(time);
-
         interaction = this.nextInteractionToHide !== undefined ? this.interactions[this.visibleInteractions[this.nextInteractionToHide]] : null;
     }
 };
@@ -3668,7 +3667,9 @@ InteractiveVideo.prototype.showInteractions = function (time) {
 
   const newInteractions = [];
   let interaction = this.nextInteractionToShow !== undefined ? this.interactions[this.nextInteractionToShow] : null;
+
   while (interaction && interaction.getDuration().from <= time) {
+    this.setDisabled(this.controls.$play);
     // Show this interaction
     interaction.toggle(time);
     interaction.repositionToWrapper(this.$videoWrapper);
