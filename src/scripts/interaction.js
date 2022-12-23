@@ -1164,6 +1164,18 @@ function Interaction(parameters, player, previousState) {
   };
 
   /**
+   * Returns task starting time if it is set
+   *
+   * @returns {boolean}
+   */
+  self.getStartTaskTime = function () {
+    if (parameters.wrongAnswerParams.isWrongChoice && parameters.wrongAnswerParams.startingTimeOfTask) {
+      return parameters.wrongAnswerParams.startingTimeOfTask;
+    }
+    return false;
+  };
+
+  /**
    * Get Texts of the interactive video
    *
    * @returns {Object}
@@ -1598,6 +1610,16 @@ function Interaction(parameters, player, previousState) {
         });
 
         instance.on('click', function (event) {
+
+          if(instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.wrongAnswerParams.isWrongChoice) {
+            self.wrongAnswerClicked += 1;
+
+            if(parameters.wrongAnswerParams.wrongChoicesAmount === self.wrongAnswerClicked) {
+              self.goToTaskStart = true;
+              self.wrongAnswerClicked = 0;
+            }
+          }
+
             const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
             if(nonceEl) {
                 $.ajax({
@@ -1641,6 +1663,9 @@ function Interaction(parameters, player, previousState) {
           instance.on('goto', goto);
           self.hotspotClicked = false;
           self.hotspotLoopsAmount = 0;
+          if (parameters.wrongAnswerParams.isWrongChoice) {
+            self.wrongAnswerClicked = 0;
+          }
         }
         if (library === 'H5P.GoToQuestion') {
           instance.on('chosen', goto);

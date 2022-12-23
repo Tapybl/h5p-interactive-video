@@ -3607,6 +3607,7 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
                 otherClicked = true;
             }
         }
+
         //check if we have navigation hotspot loopchoice and if it was clicked and if video wasn't seeked
         if (interaction.loopChoice() &&
             !otherClicked &&
@@ -3633,14 +3634,14 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
             setTimeout(function() { that.loopSeeked = false; }, 1000);
         }
 
+        if (interaction.goToTaskStart) {
+          let time = interaction.getStartTaskTime();
+          this.seekToTime(time);
+        }
+
         if (interaction.moveBack()) {
-            let time = interaction.getMoveBackTimecode();
-            let self  = this;
-            setTimeout(function() {
-                self.seek(time);
-                self.updateCurrentTime(time);
-                self.updateInteractions(time);
-            }, 10);
+          let time = interaction.getMoveBackTimecode();
+          this.seekToTime(time);
         }
 
         // Hide this interaction
@@ -3654,6 +3655,15 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
         interaction = this.nextInteractionToHide !== undefined ? this.interactions[this.visibleInteractions[this.nextInteractionToHide]] : null;
     }
 };
+
+InteractiveVideo.prototype.seekToTime = function (time) {
+  var self = this;
+  setTimeout(function() {
+    self.seek(time);
+    self.updateCurrentTime(time);
+    self.updateInteractions(time);
+  }, 10);
+}
 
 /**
  * Remove any visible interactions that are not supposed to be displayed at
