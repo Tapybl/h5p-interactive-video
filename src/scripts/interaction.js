@@ -1169,8 +1169,8 @@ function Interaction(parameters, player, previousState) {
    * @returns {boolean}
    */
   self.getStartTaskTime = function () {
-    if (parameters.wrongAnswerParams.isWrongChoice && parameters.wrongAnswerParams.startingTimeOfTask) {
-      return parameters.wrongAnswerParams.startingTimeOfTask;
+    if (parameters.incorrectAnswerParams.isIncorrectChoice && parameters.incorrectAnswerParams.startingTimeOfTask) {
+      return parameters.incorrectAnswerParams.startingTimeOfTask;
     }
     return false;
   };
@@ -1577,7 +1577,6 @@ function Interaction(parameters, player, previousState) {
 
       // Set adaptivity if question is finished on attach
       if (instance.on) {
-
         // Handle question/task finished
         instance.on('xAPI', function (event) {
           var parents = event.getVerifiedStatementValue(['context', 'contextActivities', 'parent']) || [];
@@ -1611,40 +1610,40 @@ function Interaction(parameters, player, previousState) {
 
         instance.on('click', function (event) {
 
-          if(instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.wrongAnswerParams.isWrongChoice) {
-            self.wrongAnswerClicked += 1;
+          if (instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.incorrectAnswerParams.isIncorrectChoice) {
+            self.incorrectAnswerAmount += 1;
 
-            if(parameters.wrongAnswerParams.wrongChoicesAmount === self.wrongAnswerClicked) {
+            if (parameters.incorrectAnswerParams.incorrectChoicesAmount <= self.incorrectAnswerAmount) {
               self.goToTaskStart = true;
-              self.wrongAnswerClicked = 0;
+              self.incorrectAnswerAmount = 0;
             }
           }
 
-            const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
-            if(nonceEl) {
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: '/wp-json/tapybl-reports/v1/interaction',
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
-                    },
-                    data: {
-                        videoName: player.contentData.metadata.title,
-                        h5pId: player.contentId,
-                        interactionId: parameters.action.subContentId,
-                        interactionName: self.getTexts().label,
-                        interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                        interactionGroup: self.getInteractionGroup()
-                    },
-                    success: function (response) {
-                        console.log(response);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus);
-                    }
-                });
-            }
+          const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
+          if (nonceEl) {
+            $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: '/wp-json/tapybl-reports/v1/interaction',
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+              },
+              data: {
+                videoName: player.contentData.metadata.title,
+                h5pId: player.contentId,
+                interactionId: parameters.action.subContentId,
+                interactionName: self.getTexts().label,
+                interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                interactionGroup: self.getInteractionGroup()
+              },
+              success: function (response) {
+                console.log(response);
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus);
+              }
+            });
+          }
         });
 
         instance.on('question-finished', function () {
@@ -1663,8 +1662,8 @@ function Interaction(parameters, player, previousState) {
           instance.on('goto', goto);
           self.hotspotClicked = false;
           self.hotspotLoopsAmount = 0;
-          if (parameters.wrongAnswerParams.isWrongChoice) {
-            self.wrongAnswerClicked = 0;
+          if (parameters.incorrectAnswerParams.isIncorrectChoice) {
+            self.incorrectAnswerAmount = 0;
           }
         }
         if (library === 'H5P.GoToQuestion') {

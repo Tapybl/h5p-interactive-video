@@ -3637,6 +3637,7 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
         if (interaction.goToTaskStart) {
           let time = interaction.getStartTaskTime();
           this.seekToTime(time);
+          interaction.goToTaskStart = false;
         }
 
         if (interaction.moveBack()) {
@@ -3725,7 +3726,7 @@ InteractiveVideo.prototype.play = function () {
 InteractiveVideo.prototype.seek = function (time) {
   this.nextInteractionToShow = this.nextInteractionToHide = undefined; // Reset next interactions on seek
   for (var i = 0; i < this.interactions.length; i++) {
-    if(this.interactions[i].getLibraryName() == "H5P.IVHotspot" && time !== this.interactions[i].getDestinationTime()) {
+    if (this.interactions[i].getLibraryName() == "H5P.IVHotspot" && time !== this.interactions[i].getDestinationTime()) {
        this.interactions[i].hotspotClicked = false;
     }
   }

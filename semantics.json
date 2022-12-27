@@ -224,24 +224,24 @@
                   "description": "Enter timecode in the format M:SS"
                 },
                 {
-                  "name": "wrongAnswerParams",
-                  "label": "Wrong Answer Params",
+                  "name": "incorrectAnswerParams",
+                  "label": "Incorrect Answer Params",
                   "type": "group",
                   "importance": "high",
                   "expanded": true,
                   "fields": [
                     {
-                      "name": "isWrongChoice",
-                      "label": "It is wrong choice",
+                      "name": "isIncorrectChoice",
+                      "label": "It is incorrect choice",
                       "importance": "low",
                       "type": "boolean"
                     },
                     {
-                      "name": "wrongChoicesAmount",
+                      "name": "incorrectChoicesAmount",
                       "type": "number",
-                      "label": "Wrong choices amount number",
+                      "label": "Incorrect choices amount number",
                       "importance": "low",
-                      "description": "When users reach this amount of wrong choices, they will be redirected to a beginning of a task",
+                      "description": "When users reach this amount of incorrect choices, they will be redirected to a beginning of a task",
                       "max": 100,
                       "step": 1,
                       "default": -1
@@ -251,7 +251,7 @@
                       "type": "number",
                       "widget": "timecode",
                       "importance": "low",
-                      "label": "Starting time of a Task",
+                      "label": "Seek To",
                       "description": "Enter timecode in the format M:SS"
                     }
                   ]
