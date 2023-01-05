@@ -351,7 +351,8 @@ function InteractiveVideo(params, id, contentData) {
             // Qualities might not be available until after play.
             self.addQualityChooser();
 
-            self.addPlaybackRateChooser();
+            // Removed Playback Rate Chooser
+            //self.addPlaybackRateChooser();
 
             // Make sure splash screen is removed.
             self.removeSplash();
@@ -2128,7 +2129,8 @@ InteractiveVideo.prototype.attachControls = function ($wrapper) {
     'role': 'dialog',
     html: `<h2 id="${self.playbackRateMenuId}">${self.l10n.playbackRate}</h2>`,
   });
-  self.popupMenuChoosers.push(self.controls.$playbackRateChooser);
+  // Removed Playback Rate Chooser
+  //self.popupMenuChoosers.push(self.controls.$playbackRateChooser);
 
   const closePlaybackRateMenu = () => {
     if (self.isMinimal) {
@@ -2156,13 +2158,13 @@ InteractiveVideo.prototype.attachControls = function ($wrapper) {
   }));
 
   // Button for opening video playback rate selection dialog
-  self.controls.$playbackRateButton = self.createButton('playbackRate', 'h5p-control', $right, createPopupMenuHandler('$playbackRateButton', '$playbackRateChooser'));
-  self.popupMenuButtons.push(self.controls.$playbackRateButton);
-  self.setDisabled(self.controls.$playbackRateButton);
-  self.controls.$playbackRateButton.attr('aria-haspopup', 'true');
-  self.controls.$playbackRateButton.attr('aria-expanded', 'false');
+  //self.controls.$playbackRateButton = self.createButton('playbackRate', 'h5p-control', $right, createPopupMenuHandler('$playbackRateButton', '$playbackRateChooser'));
+  //self.popupMenuButtons.push(self.controls.$playbackRateButton);
+  //self.setDisabled(self.controls.$playbackRateButton);
+  //self.controls.$playbackRateButton.attr('aria-haspopup', 'true');
+  //self.controls.$playbackRateButton.attr('aria-expanded', 'false');
 
-  self.controls.$playbackRateChooser.insertAfter(self.controls.$playbackRateButton);
+  //self.controls.$playbackRateChooser.insertAfter(self.controls.$playbackRateButton);
 
   // Add volume button control (toggle mute)
   if (!isAndroid() && !isIpad()) {
@@ -2290,11 +2292,12 @@ InteractiveVideo.prototype.attachControls = function ($wrapper) {
   }, true);
   self.controls.$playbackRateButtonMinimal.attr('role', 'menuitem');
   self.setDisabled(self.controls.$playbackRateButtonMinimal);
-  self.controls.$overlayButtons = self.controls.$overlayButtons.add(self.controls.$playbackRateButtonMinimal);
-  self.minimalMenuKeyboardControls.addElement(self.controls.$playbackRateButtonMinimal.get(0));
+  //self.controls.$overlayButtons = self.controls.$overlayButtons.add(self.controls.$playbackRateButtonMinimal);
+  //self.minimalMenuKeyboardControls.addElement(self.controls.$playbackRateButtonMinimal.get(0));
 
   self.addQualityChooser();
-  self.addPlaybackRateChooser();
+  // Removed Playback Rate Chooser
+  //self.addPlaybackRateChooser();
 
   self.interactionKeyboardControls = new Controls([new UIKeyboard()]);
 
