@@ -882,12 +882,12 @@ function Interaction(parameters, player, previousState) {
       // Set link functionality on whole button
       if (player.editor === undefined) {
         $interaction.click(function () {
-          if (instance.isOpenInTheSameTab()) {
-            window.location.href = instance.getUrl();
-          } else {
+          if (instance.isOpenInTheNewTab()) {
             window.open(instance.getUrl());
             player.pause();
             return false;
+          } else {
+            window.location.href = instance.getUrl();
           }
         });
       }
