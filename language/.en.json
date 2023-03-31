@@ -1,21 +1,21 @@
 {
   "semantics": [
     {
-      "label": "Interactive Video Editor",
+      "label": "Tap Editor",
       "fields": [
         {
           "label": "Upload/embed video",
           "fields": [
             {
               "label": "Add a video",
-              "description": "Click below to add a video you wish to use in your interactive video. You can add a video link or upload video files. It is possible to add several versions of the video with different qualities. To ensure maximum support in browsers at least add a version in webm and mp4 formats."
+              "description": "Click below to add a video you wish to use in your tap. You can add a video link or upload video files. It is possible to add several versions of the video with different qualities. To ensure maximum support in browsers at least add a version in webm and mp4 formats."
             },
             {
               "label": "Start screen options (unsupported for YouTube videos)",
               "fields": [
                 {
-                  "label": "The title of this interactive video",
-                  "default": "Interactive Video",
+                  "label": "The title of this Tap",
+                  "default": "Tap",
                   "description": "Used in summaries, statistics etc."
                 },
                 {
@@ -79,7 +79,7 @@
           ]
         },
         {
-          "label": "Add interactions",
+          "label": "Add Taps",
           "fields": [
             {
               "field": {
@@ -156,7 +156,7 @@
                       },
                       {
                         "label": "Require full score for task before proceeding",
-                        "description": "For best functionality this option should be used in conjunction with the \"Prevent skipping forward in a video\" option of Interactive Video."
+                        "description": "For best functionality this option should be used in conjunction with the \"Prevent skipping forward in a video\" option of Tap."
                       }
                     ]
                   },
