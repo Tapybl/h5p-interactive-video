@@ -149,7 +149,7 @@
       {
         "name": "assets",
         "type": "group",
-        "label": "Add interactions",
+        "label": "Add Taps",
         "importance": "high",
         "widget": "interactiveVideo",
         "video": "video/files",

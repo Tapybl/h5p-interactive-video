@@ -1662,7 +1662,7 @@ function Interaction(parameters, player, previousState) {
           }
         });
 
-        if (library === 'H5P.IVHotspot') {
+        if (library === 'H5P.IVHotspot' || library === 'H5P.Image') {
           instance.on('goto', goto);
           self.hotspotClicked = false;
           self.hotspotLoopsAmount = 0;
