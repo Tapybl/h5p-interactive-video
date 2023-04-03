@@ -3,7 +3,7 @@
     "name": "interactiveVideo",
     "type": "group",
     "widget": "wizard",
-    "label": "Interactive Video Editor",
+    "label": "Tap Editor",
     "importance": "high",
     "fields": [
       {
@@ -17,7 +17,7 @@
             "type": "video",
             "label": "Add a video",
             "importance": "high",
-            "description": "Click below to add a video you wish to use in your interactive video. You can add a video link or upload video files. It is possible to add several versions of the video with different qualities. To ensure maximum support in browsers at least add a version in webm and mp4 formats.",
+            "description": "Click below to add a video you wish to use in your tap. You can add a video link or upload video files. It is possible to add several versions of the video with different qualities. To ensure maximum support in browsers at least add a version in webm and mp4 formats.",
             "extraAttributes": [
               "metadata"
             ],
@@ -32,10 +32,10 @@
               {
                 "name": "title",
                 "type": "text",
-                "label": "The title of this interactive video",
+                "label": "The title of this tap",
                 "importance": "low",
                 "maxLength": 60,
-                "default": "Interactive Video",
+                "default": "Tap",
                 "description": "Used in summaries, statistics etc."
               },
               {
@@ -447,7 +447,7 @@
                       "name": "requireCompletion",
                       "type": "boolean",
                       "label": "Require full score for task before proceeding",
-                      "description": "For best functionality this option should be used in conjunction with the \"Prevent skipping forward in a video\" option of Interactive Video."
+                      "description": "For best functionality this option should be used in conjunction with the \"Prevent skipping forward in a video\" option of Tap."
                     }
                   ]
                 },
