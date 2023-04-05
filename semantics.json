@@ -32,10 +32,10 @@
               {
                 "name": "title",
                 "type": "text",
-                "label": "The title of this tap",
+                "label": "Text displayed when pause",
                 "importance": "low",
                 "maxLength": 60,
-                "default": "Tap",
+                "default": "Tapybl interactive video",
                 "description": "Used in summaries, statistics etc."
               },
               {
@@ -589,7 +589,7 @@
                       "type": "number",
                       "widget": "timecode",
                       "label": "Go To",
-                      "description": "The target time the user will be taken to upon pressing the hotspot. Enter timecode in the format M:SS.",
+                      "description": "The target time the user will be taken to upon pressing the navigation tap. Enter timecode in the format M:SS.",
                       "optional": true
                     },
                     {
