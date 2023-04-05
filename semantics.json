@@ -32,7 +32,7 @@
               {
                 "name": "title",
                 "type": "text",
-                "label": "Text displayed when pause",
+                "label": "Title text displayed on pause",
                 "importance": "low",
                 "maxLength": 60,
                 "default": "Tapybl interactive video",
