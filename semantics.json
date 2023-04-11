@@ -166,7 +166,7 @@
                   "name": "duration",
                   "type": "group",
                   "widget": "duration",
-                  "label": "Display time",
+                  "label": "Time segment in which this Tap is available to viewers",
                   "importance": "low",
                   "fields": [
                     {
@@ -186,42 +186,69 @@
                   "type": "boolean"
                 },
                 {
-                  "name": "loopChoice",
-                  "label": "Loop video",
-                  "importance": "low",
-                  "type": "boolean"
-                },
-                {
                   "name": "moveBack",
-                  "label": "Move back after reaching end display time",
+                  "label": "When segment ends, jump back to earlier timecode",
                   "importance": "low",
                   "type": "boolean"
                 },
                 {
                   "name": "moveBackTime",
                   "type": "number",
-                  "widget": "timecode",
                   "importance": "low",
-                  "label": "Move back time after reaching end display time",
-                  "description": "Enter timecode in the format M:SS"
+                  "label": "Timecode",
+                  "description": "Enter timecode in the format M:SS",
+                  "widget": "showWhen",
+                  "showWhen": {
+                    "rules": [
+                      {
+                        "field": "moveBack",
+                        "equals": true
+                      }
+                    ],
+                    "widget": "timecode"
+                  }
+                },
+                {
+                  "name": "loopChoice",
+                  "label": "Video segment loops between start and end time",
+                  "importance": "low",
+                  "type": "boolean"
                 },
                 {
                   "name": "loopsNumber",
                   "type": "number",
-                  "label": "Loops number",
+                  "label": "Number of times this segment should loop",
                   "importance": "low",
                   "description": "Loops number, set negative number for infinite loops",
                   "max": 100,
                   "step": 1,
-                  "default": -1
+                  "default": -1,
+                  "widget": "showWhen",
+                  "showWhen": {
+                    "rules": [
+                      {
+                        "field": "loopChoice",
+                        "equals": true
+                      }
+                    ]
+                  }
                 },
                 {
                   "name": "loopSeek",
                   "type": "number",
-                  "widget": "timecode",
                   "importance": "low",
-                  "label": "Seek to after loops amounts",
-                  "description": "Enter timecode in the format M:SS"
+                  "label": "Jump to the following timecode when loop limit reached:",
+                  "description": "Enter timecode in the format M:SS",
+                  "widget": "showWhen",
+                  "showWhen": {
+                    "rules": [
+                      {
+                        "field": "loopChoice",
+                        "equals": true
+                      }
+                    ],
+                    "widget": "timecode"
+                  }
                 },
                 {
                   "name": "incorrectAnswerParams",
@@ -262,13 +289,13 @@
                   "optional": true,
                   "importance": "low",
                   "label": "Group",
-                  "description": "Enter the group this interaction belongs to"
+                  "description": "Enter the group this tap belongs to"
                 },
                 {
                   "name": "displayType",
                   "label": "Display as",
                   "importance": "low",
-                  "description": "<b>Button</b> is a collapsed interaction the user must press to open. <b>Poster</b> is an expanded interaction displayed directly on top of the video",
+                  "description": "<b>Button</b> is a collapsed tap the user must press to open. <b>Poster</b> is an expanded tap displayed directly on top of the video",
                   "type": "select",
                   "widget": "imageRadioButtonGroup",
                   "options": [
@@ -296,7 +323,7 @@
                   "widget": "html",
                   "label": "Label",
                   "importance": "low",
-                  "description": "Label displayed next to interaction icon.",
+                  "description": "Label displayed next to tap icon.",
                   "optional": true,
                   "enterMode": "p",
                   "tags": [
@@ -551,7 +578,7 @@
                       "type": "boolean",
                       "label": "Box shadow",
                       "default": true,
-                      "description": "Adds a subtle shadow around the interaction. You might want to disable this for completely transparent interactions"
+                      "description": "Adds a subtle shadow around the tap. You might want to disable this for completely transparent taps"
                     }
                   ]
                 },
@@ -636,7 +663,7 @@
                       "name": "visualize",
                       "type": "boolean",
                       "label": "Visualize",
-                      "description": "Show that interaction can be clicked by adding a border and an icon"
+                      "description": "Show that tap can be clicked by adding a border and an icon"
                     }
                   ]
                 }
@@ -823,9 +850,9 @@
       {
         "name": "interaction",
         "type": "text",
-        "label": "Interaction title",
+        "label": "Tap title",
         "importance": "low",
-        "default": "Interaction",
+        "default": "Tap",
         "optional": true
       },
       {
@@ -1039,17 +1066,17 @@
       {
         "name": "singleInteractionAnnouncement",
         "type": "text",
-        "label": "Text explaining that a single interaction with a name has come into view",
+        "label": "Text explaining that a single tap with a name has come into view",
         "importance": "low",
-        "default": "Interaction appeared:",
+        "default": "Tap appeared:",
         "optional": true
       },
       {
         "name": "multipleInteractionsAnnouncement",
         "type": "text",
-        "label": "Text for explaining that multiple interactions have come into view",
+        "label": "Text for explaining that multiple taps have come into view",
         "importance": "low",
-        "default": "Multiple interactions appeared.",
+        "default": "Multiple taps appeared.",
         "optional": true
       },
       {
