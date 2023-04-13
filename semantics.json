@@ -222,7 +222,7 @@
                   "description": "Loops number, set negative number for infinite loops",
                   "max": 100,
                   "step": 1,
-                  "default": -1,
+                  "default": 99,
                   "widget": "showWhen",
                   "showWhen": {
                     "rules": [
