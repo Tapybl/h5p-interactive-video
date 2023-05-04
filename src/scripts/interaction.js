@@ -787,6 +787,45 @@ function Interaction(parameters, player, previousState) {
         }
     }
 
+    if (library === 'H5P.GoToQuestion') {
+      const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
+
+      if (nonceEl) {
+        let choices = parameters.action.params.choices;
+
+        let data = {
+          videoName: player.contentData.metadata.title,
+          h5pId: player.contentId,
+          interactionId: parameters.action.subContentId,
+          interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+          interactionGroup: self.getInteractionGroup()
+        };
+
+        for (let i = 0; i < choices.length; i++) {
+          if (time === choices[i].goTo) {
+            data.interactionName = choices[i].text;
+          }
+        }
+
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: '/wp-json/tapybl-reports/v1/interaction',
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+          },
+          data: data,
+          success: function (response) {
+            console.log(response);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          }
+        });
+
+      }
+    }
+
     // Jump to chosen timecode
     player.seek(time);
   };
@@ -1613,7 +1652,6 @@ function Interaction(parameters, player, previousState) {
         });
 
         instance.on('click', function (event) {
-
           if (instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.incorrectAnswerParams.isIncorrectChoice) {
             self.incorrectAnswerAmount += 1;
 
