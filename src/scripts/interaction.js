@@ -1,3 +1,5 @@
+import {forEach} from "h5p-lib-controls/src/scripts/utils/functional";
+
 const $ = H5P.jQuery;
 
 /**
@@ -1662,29 +1664,90 @@ function Interaction(parameters, player, previousState) {
           }
 
           const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
+
           if (nonceEl) {
-            $.ajax({
-              type: 'POST',
-              dataType: 'json',
-              url: '/wp-json/tapybl-reports/v1/interaction',
-              beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
-              },
-              data: {
-                videoName: player.contentData.metadata.title,
-                h5pId: player.contentId,
-                interactionId: parameters.action.subContentId,
-                interactionName: self.getTexts().label,
-                interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                interactionGroup: self.getInteractionGroup()
-              },
-              success: function (response) {
-                console.log(response);
-              },
-              error: function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus);
-              }
-            });
+
+            let data = {
+              videoName: player.contentData.metadata.title,
+              h5pId: player.contentId,
+              interactionId: parameters.action.subContentId,
+              interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+              interactionGroup: self.getInteractionGroup()
+            }
+
+            if (parameters.libraryTitle == 'Single Choice Set') {
+              setTimeout(() => {
+                let state = self.getCurrentState();
+                let usersAnswer = state.userResponses[0];
+                let usersAnswerText = parameters.action.params.choices[0].answers[usersAnswer];
+
+                let div = document.createElement("div");
+                div.innerHTML = usersAnswerText;
+                usersAnswerText = div.textContent || div.innerText || "";
+                data.interactionName = usersAnswerText;
+
+                $.ajax({
+                  type: 'POST',
+                  dataType: 'json',
+                  url: '/wp-json/tapybl-reports/v1/interaction',
+                  beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                  },
+                  data: data,
+                  success: function (response) {
+                    console.log(response);
+                  },
+                  error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                  }
+                });
+              }, 1500);
+
+            } else if(parameters.libraryTitle == 'Multiple Choice') {
+
+              let userAnswers = self.getCurrentState().answers;
+              userAnswers.forEach((item, index, arr) => {
+                let div = document.createElement("div");
+                div.innerHTML = action.params.answers[item].text;
+                let usersAnswerText = div.textContent || div.innerText || "";
+                data.interactionName = usersAnswerText;
+
+                $.ajax({
+                  type: 'POST',
+                  dataType: 'json',
+                  url: '/wp-json/tapybl-reports/v1/interaction',
+                  beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                  },
+                  data: data,
+                  success: function (response) {
+                    console.log(response);
+                  },
+                  error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                  }
+
+                });
+              });
+
+            } else {
+              data.interactionName = self.getTexts().label;
+              $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/wp-json/tapybl-reports/v1/interaction',
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                },
+                data: data,
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus);
+                }
+              });
+            }
           }
         });
 
@@ -1708,6 +1771,7 @@ function Interaction(parameters, player, previousState) {
             self.incorrectAnswerAmount = 0;
           }
         }
+
         if (library === 'H5P.GoToQuestion') {
           instance.on('chosen', goto);
         }
