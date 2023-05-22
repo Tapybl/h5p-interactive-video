@@ -274,12 +274,88 @@
                       "default": 99
                     },
                     {
-                      "name": "startingTimeOfTask",
-                      "type": "number",
-                      "widget": "timecode",
-                      "importance": "low",
-                      "label": "When threshold is reached, jump to time code:",
-                      "description": "Enter timecode in the format M:SS"
+                      "name": "destination",
+                      "label": "Destination",
+                      "type": "group",
+                      "importance": "high",
+                      "expanded": true,
+                      "fields": [
+                        {
+                          "name": "type",
+                          "label": "Type",
+                          "type": "select",
+                          "importance": "high",
+                          "widget": "selectToggleFields",
+                          "options": [
+                            {
+                              "value": "startingTimeOfTask",
+                              "label": "Timecode",
+                              "hideFields": [
+                                "externalUrl"
+                              ]
+                            },
+                            {
+                              "value": "externalUrl",
+                              "label": "Another page (URL)",
+                              "hideFields": [
+                                "startingTimeOfTask"
+                              ]
+                            }
+                          ],
+                          "default": "startingTimeOfTask"
+                        },
+                        {
+                          "name": "startingTimeOfTask",
+                          "type": "number",
+                          "widget": "timecode",
+                          "importance": "low",
+                          "label": "When threshold is reached, jump to time code:",
+                          "description": "Enter timecode in the format M:SS"
+                        },
+                        {
+                          "name": "externalUrl",
+                          "type": "group",
+                          "label": "URL",
+                          "importance": "high",
+                          "widget": "linkWidget",
+                          "optional": true,
+                          "fields": [
+                            {
+                              "name": "externalProtocol",
+                              "type": "select",
+                              "label": "Protocol",
+                              "importance": "high",
+                              "options": [
+                                {
+                                  "value": "http://",
+                                  "label": "http://"
+                                },
+                                {
+                                  "value": "https://",
+                                  "label": "https://"
+                                },
+                                {
+                                  "value": "/",
+                                  "label": "(root relative)"
+                                },
+                                {
+                                  "value": "other",
+                                  "label": "other"
+                                }
+                              ],
+                              "optional": true,
+                              "default": "http://"
+                            },
+                            {
+                              "name": "externalDomain",
+                              "type": "text",
+                              "label": "URL",
+                              "importance": "high",
+                              "optional": true
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 },

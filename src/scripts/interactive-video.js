@@ -3638,9 +3638,13 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
         }
 
         if (interaction.goToTaskStart) {
-          let time = interaction.getStartTaskTime();
-          this.seekToTime(time);
           interaction.goToTaskStart = false;
+          if (typeof interaction.destinationURL !== 'undefined') {
+            window.open(interaction.destinationURL, '_parent');
+          } else {
+            let time = interaction.getStartTaskTime();
+            this.seekToTime(time);
+          }
         }
 
         if (interaction.moveBack()) {

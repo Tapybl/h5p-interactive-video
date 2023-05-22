@@ -1656,8 +1656,10 @@ function Interaction(parameters, player, previousState) {
         instance.on('click', function (event) {
           if (instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.incorrectAnswerParams.isIncorrectChoice) {
             self.incorrectAnswerAmount += 1;
-
             if (parameters.incorrectAnswerParams.incorrectChoicesAmount <= self.incorrectAnswerAmount) {
+              if (parameters.incorrectAnswerParams.destination.type == 'externalUrl') {
+                self.destinationURL = parameters.incorrectAnswerParams.destination.externalUrl.protocol + parameters.incorrectAnswerParams.destination.externalUrl.url;
+              }
               self.goToTaskStart = true;
               self.incorrectAnswerAmount = 0;
             }
