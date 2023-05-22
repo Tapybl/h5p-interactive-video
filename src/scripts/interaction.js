@@ -1658,7 +1658,7 @@ function Interaction(parameters, player, previousState) {
             self.incorrectAnswerAmount += 1;
             if (parameters.incorrectAnswerParams.incorrectChoicesAmount <= self.incorrectAnswerAmount) {
               if (parameters.incorrectAnswerParams.destination.type == 'externalUrl') {
-                self.destinationURL = parameters.incorrectAnswerParams.destination.externalUrl.protocol + parameters.incorrectAnswerParams.destination.externalUrl.url;
+                self.destinationURL = parameters.incorrectAnswerParams.destination.externalUrl.externalProtocol + parameters.incorrectAnswerParams.destination.externalUrl.externalDomain;
               }
               self.goToTaskStart = true;
               self.incorrectAnswerAmount = 0;
