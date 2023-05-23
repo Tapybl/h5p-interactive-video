@@ -352,6 +352,12 @@
                               "label": "URL",
                               "importance": "high",
                               "optional": true
+                            },
+                            {
+                              "name": "openExternalInTheNewTab",
+                              "label": "Open the link in new window/tab",
+                              "importance": "low",
+                              "type": "boolean"
                             }
                           ]
                         }

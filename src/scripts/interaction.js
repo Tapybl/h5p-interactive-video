@@ -1659,6 +1659,7 @@ function Interaction(parameters, player, previousState) {
             if (parameters.incorrectAnswerParams.incorrectChoicesAmount <= self.incorrectAnswerAmount) {
               if (parameters.incorrectAnswerParams.destination.type == 'externalUrl') {
                 self.destinationURL = parameters.incorrectAnswerParams.destination.externalUrl.externalProtocol + parameters.incorrectAnswerParams.destination.externalUrl.externalDomain;
+                self.openDestinationInNewTab = parameters.incorrectAnswerParams.destination.externalUrl.openExternalInTheNewTab;
               }
               self.goToTaskStart = true;
               self.incorrectAnswerAmount = 0;
