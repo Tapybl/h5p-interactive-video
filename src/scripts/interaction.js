@@ -1706,6 +1706,30 @@ function Interaction(parameters, player, previousState) {
                 });
               }, 1500);
 
+            } else if (parameters.libraryTitle == 'Statements') {
+
+              let userResponse = event.data.userResponses;
+              let div = document.createElement("div");
+              div.innerHTML = parameters.action.params.summaries[0].summary[userResponse];
+              let usersAnswerText = div.textContent || div.innerText || "";
+              data.interactionName = usersAnswerText;
+
+              $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/wp-json/tapybl-reports/v1/interaction',
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                },
+                data: data,
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus);
+                }
+              });
+
             } else if(parameters.libraryTitle == 'Multiple Choice') {
 
               let userAnswers = self.getCurrentState().answers;
