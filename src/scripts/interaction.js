@@ -1706,6 +1706,27 @@ function Interaction(parameters, player, previousState) {
                 });
               }, 1500);
 
+            } else if (parameters.libraryTitle == 'Drag the Words') {
+
+              let usersAnswer = instance.getXAPIResponse();
+              data.interactionName = usersAnswer.split("[,]").join(', ');
+
+              $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/wp-json/tapybl-reports/v1/interaction',
+                beforeSend: function (xhr) {
+                  xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+                },
+                data: data,
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus);
+                }
+              });
+
             } else if (parameters.libraryTitle == 'Statements') {
 
               let userResponse = event.data.userResponses;
