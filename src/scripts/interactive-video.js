@@ -3637,24 +3637,6 @@ InteractiveVideo.prototype.hideInteractions = function (time) {
             setTimeout(function() { that.loopSeeked = false; }, 1000);
         }
 
-        if (interaction.goToTaskStart) {
-          interaction.goToTaskStart = false;
-
-          if (typeof interaction.destinationURL !== 'undefined') {
-
-            if (interaction.openDestinationInNewTab) {
-              window.open(interaction.destinationURL);
-              this.pause();
-            } else {
-              window.open(interaction.destinationURL,'_parent');
-            }
-
-          } else {
-            let time = interaction.getStartTaskTime();
-            this.seekToTime(time);
-          }
-        }
-
         if (interaction.moveBack()) {
           let time = interaction.getMoveBackTimecode();
           this.seekToTime(time);

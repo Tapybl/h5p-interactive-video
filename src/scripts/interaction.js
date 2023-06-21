@@ -1,4 +1,4 @@
-import {forEach} from "h5p-lib-controls/src/scripts/utils/functional";
+import { forEach } from "h5p-lib-controls/src/scripts/utils/functional";
 
 const $ = H5P.jQuery;
 
@@ -132,7 +132,7 @@ function Interaction(parameters, player, previousState) {
 
 
   var isLabelRelevant = (library !== 'H5P.Nil' && parameters.displayType === 'button');
-  var title = [action.params.contentName, isLabelRelevant ? stripTags(parameters.label) : '', library === 'H5P.Link' && action.params.title !== undefined  ? action.params.title : parameters.libraryTitle]
+  var title = [action.params.contentName, isLabelRelevant ? stripTags(parameters.label) : '', library === 'H5P.Link' && action.params.title !== undefined ? action.params.title : parameters.libraryTitle]
     .filter(nonEmptyString)[0];
 
   // Detect custom html class for interaction.
@@ -213,8 +213,8 @@ function Interaction(parameters, player, previousState) {
 
     // if requires completion -> open dialog right away
     if (self.getRequiresCompletion() &&
-        player.editor === undefined &&
-        player.currentState !== H5P.InteractiveVideo.SEEKING) {
+      player.editor === undefined &&
+      player.currentState !== H5P.InteractiveVideo.SEEKING) {
       openDialog(true);
     }
 
@@ -231,7 +231,7 @@ function Interaction(parameters, player, previousState) {
     if (player.editor) {
       $interaction.hover(function () {
         if ((!$interaction.is('.focused') && !$interaction.is(':focus')) &&
-            (!player.dnb || (player.dnb && !player.dnb.newElement))) {
+          (!player.dnb || (player.dnb && !player.dnb.newElement))) {
           player.editor.showInteractionTitle(title, $interaction);
           isHovered = true;
         }
@@ -320,11 +320,11 @@ function Interaction(parameters, player, previousState) {
     if (parameters.goto.type === 'timecode') {
       $anchor.click(function (event) {
         if (event.which === 1) {
-          goto({data: parameters.goto.time});
+          goto({ data: parameters.goto.time });
         }
       }).keypress(function (event) {
         if (event.which === 32) {
-          goto({data: parameters.goto.time});
+          goto({ data: parameters.goto.time });
         }
       }).attr('href', '#')
         .attr('tabindex', '0');
@@ -576,7 +576,7 @@ function Interaction(parameters, player, previousState) {
       try {
         if (instance.pause !== undefined &&
           (instance.pause instanceof Function ||
-          typeof instance.pause === 'function')) {
+            typeof instance.pause === 'function')) {
           instance.pause();
         }
       }
@@ -656,7 +656,7 @@ function Interaction(parameters, player, previousState) {
         else if (!(library === 'H5P.Text' || library === 'H5P.Table')) {
           dialogSize = 'medium';
         }
-        player.dnb.dialog.position($interaction, {width: self.dialogWidth / 16}, dialogSize);
+        player.dnb.dialog.position($interaction, { width: self.dialogWidth / 16 }, dialogSize);
       }
     }
 
@@ -665,7 +665,7 @@ function Interaction(parameters, player, previousState) {
       var lastHeight = 0;
       H5P.on(instance, 'resize', function () {
         var height = $dialogContent.height();
-        if (lastHeight > height + 10 || lastHeight < height - 10)  {
+        if (lastHeight > height + 10 || lastHeight < height - 10) {
           setTimeout(function () {
             player.dnb.dialog.scroll(height, 300);
           }, 500);
@@ -719,7 +719,7 @@ function Interaction(parameters, player, previousState) {
       size.width = max.width;
     }
 
-    var fontSizeRatio = 16 / Number($img.css('fontSize').replace('px',''));
+    var fontSizeRatio = 16 / Number($img.css('fontSize').replace('px', ''));
     $img.css({
       width: (size.width * fontSizeRatio) + 'em',
       height: (size.height * fontSizeRatio) + 'em'
@@ -758,35 +758,35 @@ function Interaction(parameters, player, previousState) {
     }
 
     if (library === 'H5P.IVHotspot') {
-        self.hotspotClicked = true;
+      self.hotspotClicked = true;
     }
 
     if (library === 'H5P.Image') {
-        const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
-        if (nonceEl) {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: '/wp-json/tapybl-reports/v1/interaction',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
-                },
-                data: {
-                    videoName: player.contentData.metadata.title,
-                    h5pId: player.contentId,
-                    interactionId: parameters.action.subContentId,
-                    interactionName: parameters.action.params.alt,
-                    interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                    interactionGroup: self.getInteractionGroup()
-                },
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(textStatus);
-                }
-            });
-        }
+      const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
+      if (nonceEl) {
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: '/wp-json/tapybl-reports/v1/interaction',
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-WP-Nonce', nonceEl.value);
+          },
+          data: {
+            videoName: player.contentData.metadata.title,
+            h5pId: player.contentId,
+            interactionId: parameters.action.subContentId,
+            interactionName: parameters.action.params.alt,
+            interactionTime: new Date().toISOString().slice(0, 19).replace('T', ' '),
+            interactionGroup: self.getInteractionGroup()
+          },
+          success: function (response) {
+            console.log(response);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log(textStatus);
+          }
+        });
+      }
     }
 
     if (library === 'H5P.GoToQuestion') {
@@ -827,9 +827,31 @@ function Interaction(parameters, player, previousState) {
 
       }
     }
-
-    // Jump to chosen timecode
-    player.seek(time);
+    if (instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.incorrectAnswerParams.isIncorrectChoice) {
+      self.incorrectAnswerAmount += 1;
+      player.seek(time)
+      console.log(parameters)
+      if (parameters.incorrectAnswerParams.incorrectChoicesAmount <= self.incorrectAnswerAmount) {
+        if (parameters.incorrectAnswerParams.destination.type == 'externalUrl') {
+          console.log("aca?")
+          self.destinationURL = parameters.incorrectAnswerParams.destination.externalUrl.externalProtocol + parameters.incorrectAnswerParams.destination.externalUrl.externalDomain;
+          self.openDestinationInNewTab = parameters.incorrectAnswerParams.destination.externalUrl.openExternalInTheNewTab;
+          if (self.openDestinationInNewTab) {
+            // Abrir la URL en una nueva pestaña
+            window.open(self.destinationURL, '_blank');
+          } else {
+            // Abrir la URL en la misma pestaña
+            window.parent.location.href = self.destinationURL;
+          }
+        } else {
+          player.seek(parameters.incorrectAnswerParams.destination.startingTimeOfTask);
+          self.incorrectAnswerAmount = 0;
+        }
+      }
+    } else {
+      // Jump to chosen timecode
+      player.seek(time);
+    }
   };
 
   /**
@@ -958,9 +980,9 @@ function Interaction(parameters, player, previousState) {
     self.trigger('display', $interaction);
 
     if (self.getRequiresCompletion() &&
-        player.currentState !== H5P.InteractiveVideo.SEEKING &&
-        player.editor === undefined &&
-        !self.hasFullScore()) {
+      player.currentState !== H5P.InteractiveVideo.SEEKING &&
+      player.editor === undefined &&
+      !self.hasFullScore()) {
       showOverlayMask($interaction);
       $interaction.focus();
     }
@@ -1053,8 +1075,8 @@ function Interaction(parameters, player, previousState) {
 
     // Disable any input
     if (instance.disableInput !== undefined &&
-        (instance.disableInput instanceof Function ||
-         typeof instance.disableInput === 'function')) {
+      (instance.disableInput instanceof Function ||
+        typeof instance.disableInput === 'function')) {
       instance.disableInput();
     }
 
@@ -1165,7 +1187,7 @@ function Interaction(parameters, player, previousState) {
    */
   self.getCurrentState = function () {
     if (instance && (instance.getCurrentState instanceof Function ||
-                     typeof instance.getCurrentState === 'function')) {
+      typeof instance.getCurrentState === 'function')) {
       return instance.getCurrentState();
     }
   };
@@ -1214,8 +1236,8 @@ function Interaction(parameters, player, previousState) {
    * @returns {boolean}
    */
   self.getStartTaskTime = function () {
-    if (parameters.incorrectAnswerParams.isIncorrectChoice && parameters.incorrectAnswerParams.startingTimeOfTask) {
-      return parameters.incorrectAnswerParams.startingTimeOfTask;
+    if (parameters.incorrectAnswerParams.isIncorrectChoice && parameters.incorrectAnswerParams.destination.startingTimeOfTask) {
+      return parameters.incorrectAnswerParams.destination.startingTimeOfTask;
     }
     return false;
   };
@@ -1361,7 +1383,7 @@ function Interaction(parameters, player, previousState) {
   self.addDot = function () {
     if (library === 'H5P.Nil') {
       // Empty menuitem for title, but not undefined
-      return $('<div/>', {'class': seekbarClasses});
+      return $('<div/>', { 'class': seekbarClasses });
     }
 
     var seekbarClasses = 'h5p-seekbar-interaction ' + classes;
@@ -1461,7 +1483,7 @@ function Interaction(parameters, player, previousState) {
       createPoster();
     }
     if (player.editor === undefined) {
-      dnbElement = player.dnb.add($interaction, undefined, {dnbElement: dnbElement, disableContextMenu: true});
+      dnbElement = player.dnb.add($interaction, undefined, { dnbElement: dnbElement, disableContextMenu: true });
     }
     else {
 
@@ -1584,7 +1606,7 @@ function Interaction(parameters, player, previousState) {
       self.trigger('domHidden', {
         '$dom': $interaction,
         'key': 'videoProgressedPast'
-      }, {'bubbles': true, 'external': true});
+      }, { 'bubbles': true, 'external': true });
       if (instance) {
         instance.trigger('hide');
       }
@@ -1603,7 +1625,7 @@ function Interaction(parameters, player, previousState) {
     if (!self.isStandaloneLabel()) {
       action.params = action.params || {};
 
-      instance = H5P.newRunnable(action, player.contentId, undefined, undefined, {parent: player, editing: player.editor !== undefined});
+      instance = H5P.newRunnable(action, player.contentId, undefined, undefined, { parent: player, editing: player.editor !== undefined });
       if (self.maxScore === undefined && instance.getMaxScore) {
         self.maxScore = instance.getMaxScore();
       }
@@ -1654,17 +1676,17 @@ function Interaction(parameters, player, previousState) {
         });
 
         instance.on('click', function (event) {
-          if (instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.incorrectAnswerParams.isIncorrectChoice) {
-            self.incorrectAnswerAmount += 1;
-            if (parameters.incorrectAnswerParams.incorrectChoicesAmount <= self.incorrectAnswerAmount) {
-              if (parameters.incorrectAnswerParams.destination.type == 'externalUrl') {
-                self.destinationURL = parameters.incorrectAnswerParams.destination.externalUrl.externalProtocol + parameters.incorrectAnswerParams.destination.externalUrl.externalDomain;
-                self.openDestinationInNewTab = parameters.incorrectAnswerParams.destination.externalUrl.openExternalInTheNewTab;
-              }
-              self.goToTaskStart = true;
-              self.incorrectAnswerAmount = 0;
-            }
-          }
+          // if (instance.libraryInfo.machineName === "H5P.IVHotspot" && parameters.incorrectAnswerParams.isIncorrectChoice) {
+          //   self.incorrectAnswerAmount += 1;
+          //   if (parameters.incorrectAnswerParams.incorrectChoicesAmount <= self.incorrectAnswerAmount) {
+          //     if (parameters.incorrectAnswerParams.destination.type == 'externalUrl') {
+          //       self.destinationURL = parameters.incorrectAnswerParams.destination.externalUrl.externalProtocol + parameters.incorrectAnswerParams.destination.externalUrl.externalDomain;
+          //       self.openDestinationInNewTab = parameters.incorrectAnswerParams.destination.externalUrl.openExternalInTheNewTab;
+          //     }
+          //     self.goToTaskStart = true;
+          //     self.incorrectAnswerAmount = 0;
+          //   }
+          // }
 
           const nonceEl = window.parent.document.getElementById('tapybl-reports-wpnonce');
 
@@ -1730,7 +1752,7 @@ function Interaction(parameters, player, previousState) {
                 }
               });
 
-            } else if(parameters.libraryTitle == 'Multiple Choice') {
+            } else if (parameters.libraryTitle == 'Multiple Choice') {
 
               let userAnswers = self.getCurrentState().answers;
               userAnswers.forEach((item, index, arr) => {
@@ -1954,7 +1976,7 @@ function Interaction(parameters, player, previousState) {
    */
   self.getXAPIData = function () {
     if (instance && (instance.getXAPIData instanceof Function ||
-                     typeof instance.getXAPIData === 'function')) {
+      typeof instance.getXAPIData === 'function')) {
       return instance.getXAPIData();
     }
   };
@@ -2089,7 +2111,7 @@ function Interaction(parameters, player, previousState) {
 }
 
 // Extends the event dispatcher
-Interaction.prototype = Object.create( H5P.EventDispatcher.prototype);
+Interaction.prototype = Object.create(H5P.EventDispatcher.prototype);
 Interaction.prototype.constructor = Interaction;
 
 /** @constant {Number} */
